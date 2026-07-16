@@ -1,0 +1,26 @@
+(ns ordinance.facts-test
+  (:require [clojure.string :as str]
+            [clojure.test :refer [deftest is]]
+            [ordinance.facts :as facts]))
+
+(deftest manila-has-spec-basis
+  (let [sb (facts/spec-basis "manila")]
+    (is (= 2 (count sb)))
+    (is (every? #(str/starts-with? (:ordinance/url %) "https://") sb))
+    (is (every? :ordinance/number sb))))
+
+(deftest unknown-municipality-has-no-spec-basis
+  (is (nil? (facts/spec-basis "quezon-city")))
+  (is (nil? (facts/spec-basis "zzz"))))
+
+(deftest coverage-is-honest
+  (let [c (facts/coverage ["manila" "quezon-city"])]
+    (is (= 2 (:requested c)))
+    (is (= 1 (:covered c)))
+    (is (= ["quezon-city"] (:missing-municipalities c)))))
+
+(deftest by-topic-filters
+  (is (= ["manila.ordinance-9107-2025-4ps-cash-cards"]
+         (mapv :ordinance/id (facts/by-topic "manila" :consumer-protection))))
+  (is (empty? (facts/by-topic "manila" :labor)))
+  (is (empty? (facts/by-topic "quezon-city" :consumer-protection))))
