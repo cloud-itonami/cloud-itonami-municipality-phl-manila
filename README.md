@@ -73,6 +73,23 @@ structure) and **City Ordinance No. 9107** (prohibiting misuse of 4Ps
 conditional-cash-transfer program cards, 11 April 2025, via
 citycouncilofmanila.com.ph's own HTML listing).
 
+## Culture catalog
+
+Alongside the ordinance catalog, this repo carries a **regional-culture
+catalog** (ADR-2607171400, `cloud-itonami-municipality-culture-catalog`
+in `com-junkawasaki/root`) — local dishes, protected products, beverages,
+festivals and heritage sites for Manila:
+
+- `src/culture/facts.cljc` — the catalog, source of truth.
+- `schema/culture.edn` — DataScript schema.
+- `data/culture-tx.edn` — derived DataScript tx-data (regenerated from
+  the catalog, never hand-edited).
+
+Same provenance discipline as the ordinance catalog: every entry cites a
+source URL that was actually fetched and read on `:culture/retrieved-at`;
+summaries state only what the cited source confirms. An item not in
+`culture.facts/catalog` has no spec-basis — never fabricate one.
+
 ## License
 
 AGPL-3.0-or-later (matches the `cloud-itonami-iso3166-*` /
